@@ -106,13 +106,17 @@ ggplot(case_by_season) +
   theme_classic() + 
   theme(axis.text = element_text(size = 13, color = "black"),
         axis.title = element_text(size = 15),
-        axis.ticks.x = element_blank()) +
+        axis.ticks.x = element_blank(),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = "transparent", color = "transparent")) +
   annotate(geom = "text", x = 2, y = 29, size = 5,
            label = substitute(list(italic(chi)^2 == chisqr, ~italic(p) == pval), 
                               list(chisqr = round(chi_test_season$statistic, 2), 
                                    pval = round(chi_test_season$p.value, 3))))
 
 ggsave("./03_Outputs/Figures/Season_barplot.tiff", width = 5, height = 4, dpi = 600, device = "tiff")  
+ggsave("./03_Outputs/Figures/Season_barplot.png", width = 5, height = 4, dpi = 600, device = "png")  
+
 
 ### Colonization time
 col_time <- ant_hitchhike %>% 
@@ -218,7 +222,9 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
         legend.text = element_text(face = "italic", hjust = 0.5, vjust = -5,
                                    margin = margin(b = 17)),
         legend.spacing.y = unit(0, "in"),
-        legend.background = element_rect(fill = "#adc7e0")) + 
+        legend.background = element_rect(fill = "#adc7e0"),
+        panel.background = element_rect(fill = "transparent"),
+        plot.background = element_rect(fill = "transparent", color = "transparent")) + 
   guides(color = guide_legend(byrow = F, title.hjust = 0.63, order = 1, 
                               override.aes = list(size = 3)), 
          fill = guide_legend(byrow = F, title.hjust = 0.63, order = 2,
@@ -266,6 +272,7 @@ ggdraw(map_taiwan) +
              width = 0.05, hjust = 0.5, vjust = 0.5)
 
 ggsave("./03_Outputs/Figures/Cases_map.tiff", width = 8.5, height = 7, dpi = 600, device = "tiff")
+ggsave("./03_Outputs/Figures/Cases_map.png", width = 8.5, height = 7, dpi = 600, device = "png")
 
 
 
