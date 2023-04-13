@@ -208,7 +208,7 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
                                 "Technomyrmex brunneus \n n = 2",
                                 "Anoplolepis gracilipes \n n = 1")) + 
   scale_fill_manual(values = pal_nejm()(8)[7:8],
-                    labels = c("     Polyrhachis dives            \n n = 2",
+                    labels = c("          Polyrhachis dives       \n n = 2",
                                "Nylanderia sp. \n n = 1")) + 
   scale_x_continuous(breaks = 118:125, labels = paste0(118:125, "° E"), expand = c(0, 0)) + 
   scale_y_continuous(breaks = 21:26, labels = paste0(21:26, "° N"), expand = c(0, 0)) + 
@@ -245,7 +245,7 @@ ant_images <- c("https://www.natureloveyou.sg/Minibeast-Bee/Dolichoderus%20thora
                 "https://taieol.tw/files/muse_taieol/muse_styles/waterfall_col_3/mcode/a2a0fdff79e9e01012ac65f3affa5b8a.jpg?itok=QQq2fhxX",
                 "https://www.natureloveyou.sg/Minibeast-Bee/Anoplolepis%20gracilipes/DSC05141%20(13).jpg",
                 "https://www.antwiki.org/wiki/images/3/36/Polyrhachis_dives_worker%2C_Okinawa%2C_Japan%2C_Taku_Shimada.jpg",
-                "https://openpsychometrics.org/tests/characters/test-resources/pics/BB/1.jpg")
+                "https://photos.smugmug.com/photos/i-tfxgLLd/2/X2/i-tfxgLLd-X2.jpg")
 
 ant_image_df <- data.frame(x = 0.915, 
                            y = c(0.807, 0.737, 0.667, 0.597, 0.527, 0.457, 0.329, 0.259), 
