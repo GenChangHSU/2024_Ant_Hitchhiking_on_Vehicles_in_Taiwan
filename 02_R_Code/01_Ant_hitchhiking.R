@@ -209,7 +209,7 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
                                 "Anoplolepis gracilipes \n n = 1")) + 
   scale_fill_manual(values = pal_nejm()(8)[7:8],
                     labels = c("          Polyrhachis dives       \n n = 2",
-                               "Nylanderia sp. \n n = 1")) + 
+                               "Nylanderia     \n n = 1")) + 
   scale_x_continuous(breaks = 118:125, labels = paste0(118:125, "° E"), expand = c(0, 0)) + 
   scale_y_continuous(breaks = 21:26, labels = paste0(21:26, "° N"), expand = c(0, 0)) + 
   theme_classic() + 
@@ -269,7 +269,8 @@ ggdraw(map_taiwan) +
   draw_image(ant_image_df$images_cropped[7], x = ant_image_df$x[7], y = ant_image_df$y[7], 
              width = 0.05, hjust = 0.5, vjust = 0.5) + 
   draw_image(ant_image_df$images_cropped[8], x = ant_image_df$x[8], y = ant_image_df$y[8], 
-             width = 0.05, hjust = 0.5, vjust = 0.5)
+             width = 0.05, hjust = 0.5, vjust = 0.5) + 
+  draw_label(label = "sp.", x = 0.82, y = 0.268, size = 9)
 
 ggsave("./03_Outputs/Figures/Cases_map.tiff", width = 8.5, height = 7, dpi = 600, device = "tiff")
 ggsave("./03_Outputs/Figures/Cases_map.png", width = 8.5, height = 7, dpi = 600, device = "png")
