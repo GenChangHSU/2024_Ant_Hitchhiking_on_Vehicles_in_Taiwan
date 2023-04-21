@@ -98,13 +98,13 @@ ggplot(case_by_season) +
   geom_bar(aes(x = season, y = case, fill = season), stat = "identity", 
            color = "black", width = 0.7, show.legend = F) +
   labs(x = NULL, y = "Number of cases") + 
-  scale_x_discrete(labels = c("Spring \n (Mar. - May)", 
-                              "Summer \n (June - Sept.)", 
-                              "Fall/Winter \n (Oct. - Dec.)")) + 
+  scale_x_discrete(labels = c("Spring \n (Mar.–May)", 
+                              "Summer \n (June–Sept.)", 
+                              "Fall/Winter \n (Oct.–Dec.)")) + 
   scale_y_continuous(limits = c(0, 32), expand = c(0, 0)) + 
   scale_fill_manual(values = c("#3CB371", "#FF4500", "#1E90FF")) +
   theme_classic() + 
-  theme(axis.text = element_text(size = 13, color = "black"),
+  theme(axis.text = element_text(size = 14, color = "black"),
         axis.title = element_text(size = 15),
         axis.ticks.x = element_blank(),
         panel.background = element_rect(fill = "transparent"),
@@ -128,7 +128,7 @@ col_time <- ant_hitchhike %>%
 col_time_labs <- col_time %>% 
   arrange(desc(Parking_duration)) %>% 
   mutate(pos = cumsum(n) - n/2,
-         labs = c("> A month", "A day - A week", "Half day - A day", "< Half day"))
+         labs = c("> A month", "A day–A week", "Half day–A day", "< Half day"))
 
 
 col_time %>% 
@@ -141,7 +141,7 @@ col_time %>%
   geom_text(data = col_time_labs, aes(x = "x", y = pos, label = labs), 
             nudge_x = c(0.28, 0.1, 0, 0.15), 
             nudge_y = c(0, -0.5, -0.5, 0.5), 
-            fontface = "bold.italic", size = 4) + 
+            fontface = "bold.italic", size = 4.5) + 
   scale_y_continuous(breaks = col_time_labs$pos, labels = NULL) + 
   scale_fill_manual(values = c("#fef0d9", "#fdcc8a", "#fc8d59", "#d7301f"), guide = F) +
   coord_polar(theta = "y", direction = -1, clip = "off") + 
