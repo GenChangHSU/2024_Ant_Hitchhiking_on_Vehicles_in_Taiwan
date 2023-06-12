@@ -3,7 +3,7 @@
 ##
 ## Author: Gen-Chang Hsu
 ##
-## Date: 2023-01-24
+## Date: 2023-06-12
 ##
 ## Description:
 ## 1. Summary of ant hitchhiking on vehicles in Taiwan.
@@ -29,12 +29,13 @@ library(cowplot)
 library(cropcircles)
 
 # Import files -----------------------------------------------------------------
-ant_hitchhike <- read_xlsx("./01_Data_raw/ant_hitchhiking_2022.xlsx", sheet = 1,
+ant_hitchhike <- read_xlsx("./01_Data_raw/ant_hitchhiking_full.xlsx", sheet = 1,
                            col_types = c("guess", "date", "guess", "guess", "skip",
                                          "guess", "guess", "guess", "skip", "guess",
                                          "guess"))
 
-
+ant_hitchhike <- read_xlsx("./01_Data_raw/ant_hitchhiking_full.xlsx", sheet = 3)
+                           
 ############################### Code starts here ###############################
 
 # 1. Data summary --------------------------------------------------------------
