@@ -29,16 +29,26 @@ library(cowplot)
 library(cropcircles)
 
 # Import files -----------------------------------------------------------------
-ant_hitchhike <- read_xlsx("./01_Data_raw/ant_hitchhiking_full.xlsx", sheet = 1,
-                           col_types = c("guess", "date", "guess", "guess", "skip",
-                                         "guess", "guess", "guess", "skip", "guess",
-                                         "guess"))
+ant_hitchhike_new <- read_xlsx("./01_Data_raw/ant_hitchhiking_full.xlsx", sheet = 1) %>% 
+  mutate(Parking_date = ymd(Parking_date))
+ant_hitchhike_old <- read_xlsx("./01_Data_raw/ant_hitchhiking_full.xlsx", sheet = 3) %>% 
+  mutate(Parking_date = ymd(Parking_date),
+         Destination_lon = as.numeric(Destination_lon),
+         Destination_lat = as.numeric(Destination_lat))
 
-ant_hitchhike <- read_xlsx("./01_Data_raw/ant_hitchhiking_full.xlsx", sheet = 3)
-                           
+
 ############################### Code starts here ###############################
 
 # 1. Data summary --------------------------------------------------------------
+### Merge the two datasets
+ant_hitchhike_all <- ant_hitchhike_new %>% mutate(Parking_duration = case_when(Parking_duration_hr < 12 ~ "Half day",
+                                                          Parking_duration_hr > 12 & Parking_duration_hr < 24 ~ "A day",
+                                                          Parking_duration_hr > 24 & Parking_duration_hr < 168 ~ "A week",
+                                                          Parking_duration_hr > 168 ~ "A month")) %>% 
+  relocate(Parking_duration, .after = Parking_time) %>% 
+  select(-Parking_duration_hr) %>% 
+  bind_rows(ant_hitchhike_old)
+
 
 ### Number of cases
 ant_hitchhike %>% nrow()
