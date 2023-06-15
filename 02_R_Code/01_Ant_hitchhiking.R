@@ -6,11 +6,9 @@
 ## Date: 2023-06-12
 ##
 ## Description:
-## 1. Summary of ant hitchhiking on vehicles in Taiwan.
-## 2. Analyze the temporal patterns of ant hitchhiking on vehicles in Taiwan.
-## 3. A map of reported ant hitchhiking cases in Taiwan.
-##
-## Notes:
+## 1. Summarize cases of ant hitchhiking on vehicles in Taiwan.
+## 2. Examine the temporal patterns of ant hitchhiking cases in Taiwan.
+## 3. Create a map of ant hitchhiking cases in Taiwan.
 ##
 ## -----------------------------------------------------------------------------
 set.seed(123)
@@ -37,6 +35,47 @@ ant_hitchhike_old <- read_xlsx("./01_Data_raw/ant_hitchhiking_full.xlsx", sheet 
          Destination_lat = as.numeric(Destination_lat))
 
 
+# ggplot theme -----------------------------------------------------------------
+my_theme <- 
+  theme(# Axis
+    axis.text.x = element_text(size = 12, color = "black", margin = margin(t = 3)),
+    axis.text.y = element_text(size = 12, color = "black"),
+    axis.title.x = element_text(size = 15, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 15, margin = margin(r = 8)),
+    axis.ticks.length.x = unit(0.2, "cm"),
+    
+    # Plot
+    plot.title = element_text(hjust = 0.5, size = 18),
+    plot.margin = unit(c(0.3, 0.3, 0.3, 0.3), "cm"),
+    plot.background = element_rect(colour = "transparent"),
+    
+    # Panel
+    panel.background = element_rect(fill = "transparent"),
+    panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    
+    # Legend
+    legend.position = c(1, 1),
+    legend.spacing.x = unit(0.2, "cm"),
+    legend.key.width = unit(1.5, "cm"),
+    legend.key.size = unit(1.2, "line"),
+    legend.key = element_blank(),
+    legend.text = element_text(size = 10, margin = margin(0, 10, 0, -5)),
+    legend.text.align = 0,
+    legend.box.just = "center",
+    legend.justification = c(0.5, 0.5),
+    legend.title.align = 0.5,
+    legend.background = element_rect(fill = "transparent"),
+    
+    # Facet strip
+    strip.background = element_rect(fill = "transparent"),
+    strip.text = element_text(size = 12, hjust = 0.5)
+  )
+
+
 ############################### Code starts here ###############################
 
 # 1. Data summary --------------------------------------------------------------
@@ -49,121 +88,101 @@ ant_hitchhike_all <- ant_hitchhike_new %>% mutate(Parking_duration = case_when(P
   select(-Parking_duration_hr) %>% 
   bind_rows(ant_hitchhike_old)
 
-
 ### Number of cases
-ant_hitchhike %>% nrow()
+ant_hitchhike_all %>% nrow()
 
 ### Number of species
-ant_hitchhike$Species %>% 
+ant_hitchhike_all$Species_English %>% 
   unique() %>% 
   length()
 
 ### Number of cases by species
-ant_hitchhike %>% 
-  group_by(Species) %>% 
+ant_hitchhike_all %>% 
+  group_by(Species_English) %>% 
   summarise(n = n()) %>% 
   arrange(desc(n)) %>% 
   mutate(prop = round(n/sum(n), 3))
 
-### Number of native vs. invasive species
-ant_hitchhike %>% 
-  distinct(Species, Status) %>% 
-  group_by(Status) %>% 
+### Number of native vs. exotic species
+ant_hitchhike_all %>% 
+  distinct(Species_English, Species_status) %>% 
+  group_by(Species_status) %>% 
   summarise(n = n())
 
-### Number of native vs. invasive species cases
-ant_hitchhike %>% 
-  group_by(Status) %>% 
+### Number of native vs. exotic species cases
+ant_hitchhike_all %>% 
+  group_by(Species_status) %>% 
   summarise(n = n()) %>% 
   mutate(prop = round(n/sum(n), 3))
 
 
-# 2. Temporal patterns of ant hitchhiking --------------------------------------
-### Day/night pattern
-ant_hitchhike %>% 
-  filter(Parking_duration %in% c("half_to_a_day", "half_day")) %>% 
-  group_by(Day_night) %>% 
+# 2. Temporal patterns of ant hitchhiking cases --------------------------------
+### Parking duration
+Parking_duration <- ant_hitchhike_all %>% 
+  filter(!Parking_duration == "NA") %>% 
+  group_by(Parking_duration) %>% 
   summarise(n = n()) %>% 
-  mutate(prop = n/sum(n))
+  mutate(prop = round(n/sum(n), 3)) %>% 
+  mutate(Parking_duration = fct_relevel(Parking_duration, "Half day", "A day", "A week", "A month")) %>% 
+  arrange(Parking_duration)
 
-### Monthly pattern  
-ant_hitchhike %>% 
-  transmute(month = month(Date)) %>% 
+Parking_duration
+
+### Cases by month  
+cases_by_month <- ant_hitchhike_all %>% 
+  transmute(month = month(Parking_date)) %>% 
   count(month)
 
-### Seasonal pattern
-case_by_season <- ant_hitchhike %>%
-  transmute(month = month(Date)) %>% 
+cases_by_month
+
+### Cases by season
+cases_by_season <- ant_hitchhike_all %>%
+  transmute(month = month(Parking_date)) %>% 
   mutate(month = as.factor(month)) %>% 
   .$month %>% 
   fct_collapse(., 
                spring = c("3", "4", "5"),
-               summer = c("6", "7", "8", "9"),
-               fall_winter = c("10", "11", "12")) %>% 
+               summer = c("6", "7", "8"),
+               fall = c("9", "10", "11"),
+               winter = c("12", "1", "2")) %>% 
   fct_count() %>% 
-  rename(season = f, case = n)
+  rename(season = f, case = n) %>% 
+  mutate(season = fct_relevel(season, "winter", after = 3)) %>% 
+  arrange(season)
+  
+cases_by_season
 
-chi_test_season <- chisq.test(case_by_season$case, p = c(0.3, 0.4, 0.3))
+# Chi-square test of cases in each season
+chi_test_season <- chisq.test(cases_by_season$case)
 
-ggplot(case_by_season) + 
+# barplot of cases by season
+ggplot(cases_by_season) + 
   geom_bar(aes(x = season, y = case, fill = season), stat = "identity", 
            color = "black", width = 0.7, show.legend = F) +
   labs(x = NULL, y = "Number of cases") + 
-  scale_x_discrete(labels = c("Spring \n (Mar.–May)", 
-                              "Summer \n (June–Sept.)", 
-                              "Fall/Winter \n (Oct.–Dec.)")) + 
-  scale_y_continuous(limits = c(0, 32), expand = c(0, 0)) + 
-  scale_fill_manual(values = c("#3CB371", "#FF4500", "#1E90FF")) +
-  theme_classic() + 
-  theme(axis.text = element_text(size = 14, color = "black"),
-        axis.title = element_text(size = 15),
-        axis.ticks.x = element_blank(),
-        panel.background = element_rect(fill = "transparent"),
-        plot.background = element_rect(fill = "transparent", color = "transparent")) +
-  annotate(geom = "text", x = 2, y = 29, size = 5,
+  scale_x_discrete(labels = c("Spring", 
+                              "Summer", 
+                              "Fall",
+                              "Winter")) + 
+  scale_y_continuous(limits = c(0, 25), expand = c(0, 0)) + 
+  scale_fill_manual(values = c("#3CB371", "#FF4500", "#f1a340", "#1E90FF")) +
+  my_theme + 
+  theme(axis.ticks.length.x = unit(0, "in"),
+        axis.text.x = element_text(margin = margin(t = 6))) + 
+  annotate(geom = "text", x = 2.5, y = 23.5, size = 5,
            label = substitute(list(italic(chi)^2 == chisqr, ~italic(p) == pval), 
                               list(chisqr = round(chi_test_season$statistic, 2), 
                                    pval = round(chi_test_season$p.value, 3))))
 
 ggsave("./03_Outputs/Figures/Season_barplot.tiff", width = 5, height = 4, dpi = 600, device = "tiff")  
-ggsave("./03_Outputs/Figures/Season_barplot.png", width = 5, height = 4, dpi = 600, device = "png")  
 
 
-### Colonization time
-col_time <- ant_hitchhike %>% 
-  filter(Parking_duration != "NA") %>% 
-  group_by(Parking_duration) %>% 
-  summarise(n = n()) %>% 
-  mutate(Parking_duration = fct_relevel(Parking_duration, "a_day_to_a_week", after = 2))
-
-col_time_labs <- col_time %>% 
-  arrange(desc(Parking_duration)) %>% 
-  mutate(pos = cumsum(n) - n/2,
-         labs = c("> A month", "A day–A week", "Half day–A day", "< Half day"))
 
 
-col_time %>% 
-  ggplot() + 
-  geom_bar(aes(x = "x", y = n, fill = Parking_duration), 
-           stat = "identity", position = "stack", color = "black") + 
-  geom_text(data = col_time_labs, aes(x = "x", y = pos, label = paste("italic(n) == ", n)), parse = T,
-            nudge_x = c(0.18, 0.1, 0.11, 0.1), 
-            nudge_y = c(0, 0.75, -0.6, -0.6)) +
-  geom_text(data = col_time_labs, aes(x = "x", y = pos, label = labs), 
-            nudge_x = c(0.28, 0.1, 0, 0.15), 
-            nudge_y = c(0, -0.5, -0.5, 0.5), 
-            fontface = "bold.italic", size = 4.5) + 
-  scale_y_continuous(breaks = col_time_labs$pos, labels = NULL) + 
-  scale_fill_manual(values = c("#fef0d9", "#fdcc8a", "#fc8d59", "#d7301f"), guide = F) +
-  coord_polar(theta = "y", direction = -1, clip = "off") + 
-  theme_void() +
-  theme(plot.title = element_text(hjust = 0.5, size = 15),
-        axis.text.x = element_text(size = 12, margin = margin(l = 15))) 
-
-ggsave("./03_Outputs/Figures/Col_time_pie.tiff", width = 4, height = 4, dpi = 600, device = "tiff")
 
 
-# 3. Maps ----------------------------------------------------------------------
+
+# 3. Map -----------------------------------------------------------------------
 
 ### A map of East Asia
 inset_map_asia <- ggplot(map_data("world"), aes(x = long, y = lat, group = group)) +
