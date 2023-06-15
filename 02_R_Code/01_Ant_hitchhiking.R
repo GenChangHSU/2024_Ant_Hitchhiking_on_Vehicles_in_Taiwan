@@ -115,6 +115,11 @@ ant_hitchhike_all %>%
   summarise(n = n()) %>% 
   mutate(prop = round(n/sum(n), 3))
 
+### Number of cases on cars vs. scooters
+ant_hitchhike_all %>% 
+  group_by(Vehicle_type) %>% 
+  summarise(n = n())
+
 
 # 2. Temporal patterns of ant hitchhiking cases --------------------------------
 ### Parking duration
