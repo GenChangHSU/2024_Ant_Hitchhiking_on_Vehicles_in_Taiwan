@@ -18,6 +18,7 @@ set.seed(123)
 library(tidyverse)
 library(readxl)
 library(lubridate)
+library(magrittr)
 library(maps)
 library(ggthemes)
 library(ggmap)
@@ -98,10 +99,12 @@ ant_hitchhike_all$Species_English %>%
 
 ### Number of cases by species
 ant_hitchhike_all %>% 
-  group_by(Species_English) %>% 
+  group_by(Species_English, Species_status) %>% 
   summarise(n = n()) %>% 
   arrange(desc(n)) %>% 
-  mutate(prop = round(n/sum(n), 3))
+  mutate(prop = round(n/sum(n), 3)) %T>% 
+  write_csv("./03_Outputs/Tables/Case_summary.csv")
+
 
 ### Number of native vs. exotic species
 ant_hitchhike_all %>% 
