@@ -191,8 +191,7 @@ ggsave("./03_Outputs/Figures/Season_barplot.tiff", width = 5, height = 4, dpi = 
 
 
 # 3. Map -----------------------------------------------------------------------
-
-### A map of East Asia
+### An inset map of East Asia
 inset_map_asia <- ggplot(map_data("world"), aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "grey90", color = "black") + 
   geom_rect(xmin = 119, xmax = 123, ymin = 21, ymax = 26, 
@@ -206,40 +205,41 @@ inset_map_asia <- ggplot(map_data("world"), aes(x = long, y = lat, group = group
 inset_map_asia
 
 ### A map of ant hitchhiking cases in Taiwan
-# Split the data set into invasive and native species
-dat_invasive <- filter(ant_hitchhike, Status == "invasive") %>% 
-  rename(Invasive = Species)
+# (1) exotic species
+exotic_sp <- filter(ant_hitchhike_all, Species_status == "Exotic") %>% 
+  rename(Exotic = Species_English)
 
-invasive_rank <- dat_invasive %>% 
-  count(Invasive) %>% 
+exotic_rank <- exotic_sp %>% 
+  count(Exotic) %>% 
   arrange(desc(n)) %>% 
-  pull(Invasive)
+  pull(Exotic)
 
-dat_invasive <- dat_invasive %>% 
-  mutate(Invasive = factor(Invasive, level = invasive_rank, ordered = T))
+exotic_sp <- exotic_sp %>% 
+  mutate(Exotic = factor(Exotic, level = exotic_rank, ordered = T))
 
-dat_native <- filter(ant_hitchhike, Status == "native") %>% 
-  rename(Native = Species)
+# (2) native species
+native_sp <- filter(ant_hitchhike_all, Species_status == "Native") %>% 
+  rename(Native = Species_English)
 
-native_rank <- dat_native %>% 
+native_rank <- native_sp %>% 
   count(Native) %>% 
   arrange(desc(n)) %>% 
   pull(Native)
 
-dat_native <- dat_native %>% 
+native_sp <- native_sp %>% 
   mutate(Native = factor(Native, level = native_rank, ordered = T))
 
-# Bounding box of the Taiwan map
+# bounding box of the Taiwan map
 taiwan_bbox <- c(left = 118.5, right = 125.1, bottom = 21, top = 26)
 
-# The map
+# the map
 map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>% 
   ggmap() + 
-  geom_point(data = dat_invasive, aes(x = Lon, y = Lat, color = Invasive), size = 2) + 
-  geom_point(data = dat_native, aes(x = Lon, y = Lat, fill = Native), size = 2, shape = 21, color = "transparent") + 
+  geom_point(data = exotic_sp, aes(x = Location_lon, y = Location_lat, color = Exotic), size = 2) + 
+  geom_point(data = native_sp, aes(x = Location_lon, y = Location_lat, fill = Native), size = 2, shape = 21, color = "transparent") + 
   labs(x = NULL, y = NULL) + 
   scale_color_manual(values = pal_nejm()(8)[1:6], 
-                     labels = c("Dolichoderus thoracicus \n n = 22",
+                     labels = c("Dolichoderus thoracicus \n n = 26",
                                 "Tapinoma melanocephalum \n n = 5",
                                 "Paratrechina longicornis \n n = 4",
                                 "Technomyrmex albipes \n n = 4",
@@ -248,13 +248,13 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
   scale_fill_manual(values = pal_nejm()(8)[7:8],
                     labels = c("          Polyrhachis dives       \n n = 2",
                                "Nylanderia     \n n = 1")) + 
-  scale_x_continuous(breaks = 118:125, labels = paste0(118:125, "° E"), expand = c(0, 0)) + 
+  scale_x_continuous(limits = c(118.5, 124.7), breaks = 119:124, labels = paste0(119:124, "° E"), expand = c(0, 0)) + 
   scale_y_continuous(breaks = 21:26, labels = paste0(21:26, "° N"), expand = c(0, 0)) + 
   theme_classic() + 
-  theme(axis.text = element_text(colour = "black", size = 8),
+  theme(axis.text = element_text(colour = "black", size = 11),
         axis.line = element_blank(),
-        legend.position = c(0.8, 0.54),
-        legend.margin = margin(r = 50, b = 10),
+        legend.position = c(0.84, 0.54),
+        legend.margin = margin(r = 30, b = 10),
         legend.title = element_text(face = "bold", margin = margin(t = 5, b = 5)),
         legend.title.align = 0.5,
         legend.text = element_text(face = "italic", hjust = 0.5, vjust = -5,
@@ -263,56 +263,24 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
         legend.background = element_rect(fill = "#adc7e0"),
         panel.background = element_rect(fill = "transparent"),
         plot.background = element_rect(fill = "transparent", color = "transparent")) + 
-  guides(color = guide_legend(byrow = F, title.hjust = 0.63, order = 1, 
+  guides(color = guide_legend(byrow = F, title.hjust = 0.63, order = 2, 
                               override.aes = list(size = 3)), 
-         fill = guide_legend(byrow = F, title.hjust = 0.63, order = 2,
+         fill = guide_legend(byrow = F, title.hjust = 0.63, order = 1,
                              override.aes = list(size = 3))) +
-  scalebar(x.min = 123, x.max = 124, y.min = 21.3, y.max = 21.6,
+  scalebar(x.min = 122.8, x.max = 123.8, y.min = 21.3, y.max = 21.6,
            dist = 50, dist_unit = "km", transform = T, model = "WGS84", height = 0.2, st.dist = 0.2, st.size = 2.8) + 
   coord_equal() +
-  north(x.min = 124.7, x.max = 124.8, y.min = 21.4, y.max = 21.5, symbol = 10, scale = 5) + 
-  annotate(geom = "text", x = 124.55, y = 21.6, label = "N", size = 6)
+  north(x.min = 124.5, x.max = 124.6, y.min = 21.4, y.max = 21.5, symbol = 10, scale = 5) + 
+  annotate(geom = "text", x = 124.35, y = 21.6, label = "N", size = 6)
   
 map_taiwan
 
-### Merge the inset map and the main map and add ant images
-ant_images <- c("https://www.natureloveyou.sg/Minibeast-Bee/Dolichoderus%20thoracicus/DSC00118%20(14).jpg",
-                "https://entnemdept.ufl.edu/creatures/urban/ants/ghost_ant03.jpg",
-                "https://bugguide.net/images/cache/7QF/RQQ/7QFRQQYRJKQ0X0JQ70TQX0DQ403QZQYRXQBRLQTQ40ARJK1R3KNRLQURYKVRG0NRYKBR7QK0XQJR20JRZQ1R40OQX0AR.jpg",
-                "https://canberrapestcontrol.com.au/wp-content/uploads/2016/08/White-Footed-House-Ant.jpg",
-                "https://taieol.tw/files/muse_taieol/muse_styles/waterfall_col_3/mcode/a2a0fdff79e9e01012ac65f3affa5b8a.jpg?itok=QQq2fhxX",
-                "https://www.natureloveyou.sg/Minibeast-Bee/Anoplolepis%20gracilipes/DSC05141%20(13).jpg",
-                "https://www.antwiki.org/wiki/images/3/36/Polyrhachis_dives_worker%2C_Okinawa%2C_Japan%2C_Taku_Shimada.jpg",
-                "https://photos.smugmug.com/photos/i-tfxgLLd/2/X2/i-tfxgLLd-X2.jpg")
-
-ant_image_df <- data.frame(x = 0.915, 
-                           y = c(0.807, 0.737, 0.667, 0.597, 0.527, 0.457, 0.329, 0.259), 
-                           images = ant_images) %>%
-  mutate(images_cropped = circle_crop(images))
-
-ggdraw(map_taiwan) + 
-  draw_plot(inset_map_asia, x = 0.039, y = 0.2875, width = 0.22) +
-  draw_image(ant_image_df$images_cropped[1], x = ant_image_df$x[1], y = ant_image_df$y[1], 
-             width = 0.05, hjust = 0.5, vjust = 0.5) + 
-  draw_image(ant_image_df$images_cropped[2], x = ant_image_df$x[2], y = ant_image_df$y[2], 
-             width = 0.05, hjust = 0.5, vjust = 0.5) + 
-  draw_image(ant_image_df$images_cropped[3], x = ant_image_df$x[3], y = ant_image_df$y[3], 
-             width = 0.05, hjust = 0.5, vjust = 0.5) + 
-  draw_image(ant_image_df$images_cropped[4], x = ant_image_df$x[4], y = ant_image_df$y[4], 
-             width = 0.05, hjust = 0.5, vjust = 0.5) + 
-  draw_image(ant_image_df$images_cropped[5], x = ant_image_df$x[5], y = ant_image_df$y[5], 
-             width = 0.05, hjust = 0.5, vjust = 0.5) + 
-  draw_image(ant_image_df$images_cropped[6], x = ant_image_df$x[6], y = ant_image_df$y[6], 
-             width = 0.05, hjust = 0.5, vjust = 0.5) + 
-  draw_image(ant_image_df$images_cropped[7], x = ant_image_df$x[7], y = ant_image_df$y[7], 
-             width = 0.05, hjust = 0.5, vjust = 0.5) + 
-  draw_image(ant_image_df$images_cropped[8], x = ant_image_df$x[8], y = ant_image_df$y[8], 
-             width = 0.05, hjust = 0.5, vjust = 0.5) + 
-  draw_label(label = "sp.", x = 0.82, y = 0.268, size = 9)
+### Merge the inset map and the main map
+ggdraw(map_taiwan) +
+  draw_plot(inset_map_asia, x = 0.05, y = 0.305, width = 0.23) +
+  draw_label(label = "sp.", x = 0.875, y = 0.7485, size = 9)
 
 ggsave("./03_Outputs/Figures/Cases_map.tiff", width = 8.5, height = 7, dpi = 600, device = "tiff")
-ggsave("./03_Outputs/Figures/Cases_map.png", width = 8.5, height = 7, dpi = 600, device = "png")
-
 
 
 
