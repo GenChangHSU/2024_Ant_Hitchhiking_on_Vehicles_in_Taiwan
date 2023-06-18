@@ -185,11 +185,6 @@ ggplot(cases_by_season) +
 ggsave("./03_Outputs/Figures/Season_barplot.tiff", width = 5, height = 4, dpi = 600, device = "tiff")  
 
 
-
-
-
-
-
 # 3. Map -----------------------------------------------------------------------
 ### An inset map of East Asia
 inset_map_asia <- ggplot(map_data("world"), aes(x = long, y = lat, group = group)) +
@@ -238,14 +233,14 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
   geom_point(data = exotic_sp, aes(x = Location_lon, y = Location_lat, color = Exotic), size = 2) + 
   geom_point(data = native_sp, aes(x = Location_lon, y = Location_lat, fill = Native), size = 2, shape = 21, color = "transparent") + 
   labs(x = NULL, y = NULL) + 
-  scale_color_manual(values = pal_nejm()(8)[1:6], 
+  scale_color_manual(values = c("#FF0000", "#34210C", "#DFAC77", "#764A1B", "#FF9933", "#FFCC99"), 
                      labels = c("Dolichoderus thoracicus \n n = 26",
                                 "Tapinoma melanocephalum \n n = 5",
                                 "Paratrechina longicornis \n n = 4",
                                 "Technomyrmex albipes \n n = 4",
                                 "Technomyrmex brunneus \n n = 2",
                                 "Anoplolepis gracilipes \n n = 1")) + 
-  scale_fill_manual(values = pal_nejm()(8)[7:8],
+  scale_fill_manual(values = c("#0033FF", "#0099FF"),
                     labels = c("          Polyrhachis dives       \n n = 2",
                                "Nylanderia     \n n = 1")) + 
   scale_x_continuous(limits = c(118.5, 124.7), breaks = 119:124, labels = paste0(119:124, "° E"), expand = c(0, 0)) + 
