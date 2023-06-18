@@ -191,7 +191,7 @@ inset_map_asia <- ggplot(map_data("world"), aes(x = long, y = lat, group = group
   geom_polygon(fill = "grey90", color = "black") + 
   geom_rect(xmin = 119, xmax = 123, ymin = 21, ymax = 26, 
             color = "red", fill = NA, linewidth = 1) +
-  geom_text(x = 125, y = 23.5, label = "Taiwan", hjust = 0, size = 4, fontface = "bold") + 
+  geom_text(x = 125, y = 23.5, label = "Taiwan", hjust = 0, size = 5, fontface = "bold") + 
   coord_fixed(ratio = 1.05, xlim = c(100, 140), ylim = c(0, 50)) +
   theme_map() +
   theme(panel.border = element_rect(colour = "black", fill = NA),
@@ -246,14 +246,15 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
   scale_x_continuous(limits = c(118.5, 124.7), breaks = 119:124, labels = paste0(119:124, "° E"), expand = c(0, 0)) + 
   scale_y_continuous(breaks = 21:26, labels = paste0(21:26, "° N"), expand = c(0, 0)) + 
   theme_classic() + 
-  theme(axis.text = element_text(colour = "black", size = 11),
+  theme(axis.text = element_text(colour = "black", size = 13),
         axis.line = element_blank(),
         legend.position = c(0.84, 0.54),
         legend.margin = margin(r = 30, b = 10),
-        legend.title = element_text(face = "bold", margin = margin(t = 5, b = 5)),
+        legend.title = element_text(face = "bold", margin = margin(t = 5, b = 5),
+                                    size = 15),
         legend.title.align = 0.5,
         legend.text = element_text(face = "italic", hjust = 0.5, vjust = -5,
-                                   margin = margin(b = 17)),
+                                   margin = margin(b = 17), size = 13),
         legend.spacing.y = unit(0, "in"),
         legend.background = element_rect(fill = "#adc7e0"),
         panel.background = element_rect(fill = "transparent"),
