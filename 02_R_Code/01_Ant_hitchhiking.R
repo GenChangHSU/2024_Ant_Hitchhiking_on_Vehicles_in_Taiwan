@@ -248,13 +248,13 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
   theme_classic() + 
   theme(axis.text = element_text(colour = "black", size = 13),
         axis.line = element_blank(),
-        legend.position = c(0.84, 0.54),
-        legend.margin = margin(r = 30, b = 10),
-        legend.title = element_text(face = "bold", margin = margin(t = 5, b = 5),
+        legend.position = c(0.805, 0.54),
+        legend.margin = margin(r = 12, b = 10),
+        legend.title = element_text(face = "bold", margin = margin(t = 5, b = 0),
                                     size = 15),
         legend.title.align = 0.5,
-        legend.text = element_text(face = "italic", hjust = 0.5, vjust = -5,
-                                   margin = margin(b = 17), size = 13),
+        legend.text = element_text(face = "italic", hjust = 0.5, vjust = -3.5,
+                                   margin = margin(b = 12), size = 13),
         legend.spacing.y = unit(0, "in"),
         legend.background = element_rect(fill = "#adc7e0"),
         panel.background = element_rect(fill = "transparent"),
@@ -263,18 +263,18 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
                               override.aes = list(size = 3)), 
          fill = guide_legend(byrow = F, title.hjust = 0.63, order = 1,
                              override.aes = list(size = 3))) +
-  scalebar(x.min = 122.8, x.max = 123.8, y.min = 21.3, y.max = 21.6,
-           dist = 50, dist_unit = "km", transform = T, model = "WGS84", height = 0.2, st.dist = 0.2, st.size = 2.8) + 
+  scalebar(x.min = 122.65, x.max = 123.65, y.min = 21.3, y.max = 21.6,
+           dist = 50, dist_unit = "km", transform = T, model = "WGS84", height = 0.2, st.dist = 0.2, st.size = 3.2) + 
   coord_equal() +
-  north(x.min = 124.5, x.max = 124.6, y.min = 21.4, y.max = 21.5, symbol = 10, scale = 5) + 
-  annotate(geom = "text", x = 124.35, y = 21.6, label = "N", size = 6)
+  north(x.min = 124.43, x.max = 124.6, y.min = 21.4, y.max = 21.5, symbol = 10, scale = 5) + 
+  annotate(geom = "text", x = 124.167, y = 21.55, label = "N", size = 6)
   
 map_taiwan
 
 ### Merge the inset map and the main map
 ggdraw(map_taiwan) +
-  draw_plot(inset_map_asia, x = 0.05, y = 0.305, width = 0.23) +
-  draw_label(label = "sp.", x = 0.875, y = 0.7485, size = 9)
+  draw_plot(inset_map_asia, x = 0.059, y = 0.303, width = 0.23) +
+  draw_label(label = "sp.", x = 0.878, y = 0.766, size = 13)
 
 ggsave("./03_Outputs/Figures/Cases_map.tiff", width = 8.5, height = 7, dpi = 600, device = "tiff")
 
