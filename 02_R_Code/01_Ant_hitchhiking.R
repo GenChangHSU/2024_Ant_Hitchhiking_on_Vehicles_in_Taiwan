@@ -15,17 +15,19 @@ set.seed(123)
 
 
 # Libraries --------------------------------------------------------------------
-library(tidyverse)
 library(readxl)
 library(lubridate)
 library(magrittr)
 library(maps)
 library(ggthemes)
-library(ggmap)
-library(ggsn)
-library(ggsci)
 library(cowplot)
-library(cropcircles)
+library(sf)
+library(elevatr)
+library(raster)
+library(ggnewscale)
+library(ggsn)
+library(tidyverse)
+
 
 # Import files -----------------------------------------------------------------
 ant_hitchhike_new <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 1) %>% 
@@ -224,15 +226,23 @@ native_rank <- native_sp %>%
 native_sp <- native_sp %>% 
   mutate(Native = factor(Native, level = native_rank, ordered = T))
 
-# bounding box of the Taiwan map
-taiwan_bbox <- c(left = 118.5, right = 125.1, bottom = 21, top = 26)
+# administrative boundary data of Taiwan from the "geoBoundaries" database 
+taiwan_boundary <- st_read("./01_Data_raw/TW_geoBoundaries/geoBoundaries-TWN-ADM0.shp")
+
+# elevation data of Taiwan from the "Amazon Web Services" database  
+taiwan_elevation <- get_elev_raster(locations = taiwan_boundary, z = 9, clip = "locations") %>% 
+  as.data.frame(xy = T, na.rm = T) %>%
+  `colnames<-`(c("lon", "lat", "elev"))
 
 # the map
-map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>% 
-  ggmap() + 
+map_taiwan <- ggplot() +
+  geom_raster(data = taiwan_elevation, aes(x = lon, y = lat, fill = elev), alpha = 0.7, show.legend = F) +
+  geom_sf(data = taiwan_boundary, color = "grey10", fill = "transparent", size = 0.2) +
+  scale_fill_gradient2(low = "grey", high = "grey70") +
+  new_scale_fill() +
   geom_point(data = exotic_sp, aes(x = Location_lon, y = Location_lat, color = Exotic), size = 2) + 
   geom_point(data = native_sp, aes(x = Location_lon, y = Location_lat, fill = Native), size = 2, shape = 21, color = "transparent") + 
-  labs(x = NULL, y = NULL) + 
+  coord_sf(xlim = c(118.3, 125.5), ylim = c(21, 26.6)) +
   scale_color_manual(values = c("#FF0000", "#34210C", "#DFAC77", "#764A1B", "#FF9933", "#FFCC99"), 
                      labels = c("Dolichoderus thoracicus \n n = 26",
                                 "Tapinoma melanocephalum \n n = 5",
@@ -243,40 +253,37 @@ map_taiwan <- get_stamenmap(taiwan_bbox, zoom = 8, maptype = "terrain") %>%
   scale_fill_manual(values = c("#0033FF", "#0099FF"),
                     labels = c("          Polyrhachis dives       \n n = 2",
                                "Nylanderia     \n n = 1")) + 
-  scale_x_continuous(limits = c(118.5, 124.7), breaks = 119:124, labels = paste0(119:124, "° E"), expand = c(0, 0)) + 
-  scale_y_continuous(breaks = 21:26, labels = paste0(21:26, "° N"), expand = c(0, 0)) + 
-  theme_classic() + 
-  theme(axis.text = element_text(colour = "black", size = 13),
-        axis.line = element_blank(),
-        legend.position = c(0.805, 0.54),
-        legend.margin = margin(r = 12, b = 10),
-        legend.title = element_text(face = "bold", margin = margin(t = 5, b = 0),
-                                    size = 15),
-        legend.title.align = 0.5,
-        legend.text = element_text(face = "italic", hjust = 0.5, vjust = -3.5,
-                                   margin = margin(b = 12), size = 13),
-        legend.spacing.y = unit(0, "in"),
-        legend.background = element_rect(fill = "#adc7e0"),
-        panel.background = element_rect(fill = "transparent"),
-        plot.background = element_rect(fill = "transparent", color = "transparent")) + 
   guides(color = guide_legend(byrow = F, title.hjust = 0.63, order = 2, 
                               override.aes = list(size = 3)), 
          fill = guide_legend(byrow = F, title.hjust = 0.63, order = 1,
                              override.aes = list(size = 3))) +
-  scalebar(x.min = 122.65, x.max = 123.65, y.min = 21.3, y.max = 21.6,
-           dist = 50, dist_unit = "km", transform = T, model = "WGS84", height = 0.2, st.dist = 0.2, st.size = 3.2) + 
-  coord_equal() +
-  north(x.min = 124.43, x.max = 124.6, y.min = 21.4, y.max = 21.5, symbol = 10, scale = 5) + 
-  annotate(geom = "text", x = 124.167, y = 21.55, label = "N", size = 6)
+  labs(x = "", y = "") + 
+  theme_classic() + 
+  theme(axis.text = element_text(colour = "black", size = 13),
+        axis.line = element_blank(),
+        panel.background = element_rect(color = "black"),
+        legend.position = c(0.78, 0.5),
+        legend.margin = margin(r = 12, b = 10),
+        legend.title = element_text(face = "bold", margin = margin(t = 5, b = 0), size = 15),
+        legend.title.align = 0.5,
+        legend.text = element_text(face = "italic", hjust = 0.5, vjust = -3.5,
+                                   margin = margin(b = 12), size = 13),
+        legend.spacing.y = unit(0, "in"),
+        legend.background = element_rect(color = "white")) +
+  scalebar(x.min = 119.45, x.max = 119.45, y.min = 21.1, y.max = 21.4,
+           dist = 50, dist_unit = "km", transform = T, model = "WGS84", height = 0.2, st.dist = 0.2, st.size = 3.2) +
+  north(x.min = 119.23, x.max = 119.4, y.min = 21.65, y.max = 21.75, symbol = 10, scale = 5) + 
+  annotate(geom = "text", x = 118.98, y = 21.8, label = "N", size = 6)
   
 map_taiwan
 
 ### Merge the inset map and the main map
 ggdraw(map_taiwan) +
-  draw_plot(inset_map_asia, x = 0.059, y = 0.303, width = 0.23) +
-  draw_label(label = "sp.", x = 0.878, y = 0.766, size = 13)
+  draw_plot(inset_map_asia, x = 0.11, y = 0.288, width = 0.23) +
+  draw_label(label = "sp.", x = 0.854, y = 0.743, size = 13)
 
 ggsave("./03_Outputs/Figures/Cases_map.tiff", width = 8.5, height = 7, dpi = 600, device = "tiff")
+
 
 
 
