@@ -271,7 +271,7 @@ map_taiwan <- ggplot() +
         legend.spacing.y = unit(0, "in"),
         legend.background = element_rect(color = "white")) +
   scalebar(x.min = 119.45, x.max = 119.45, y.min = 21.1, y.max = 21.4,
-           dist = 50, dist_unit = "km", transform = T, model = "WGS84", height = 0.2, st.dist = 0.2, st.size = 3.2) +
+           dist = 50, dist_unit = "km", transform = T, model = "WGS84", height = 0.2, st.dist = 0.4, st.size = 3.2) +
   north(x.min = 119.23, x.max = 119.4, y.min = 21.65, y.max = 21.75, symbol = 10, scale = 5) + 
   annotate(geom = "text", x = 118.98, y = 21.8, label = "N", size = 6)
   
