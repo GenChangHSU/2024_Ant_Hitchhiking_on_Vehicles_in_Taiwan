@@ -3,7 +3,7 @@
 ##
 ## Author: Gen-Chang Hsu
 ##
-## Date: 2023-06-12
+## Date: 2023-09-20
 ##
 ## Description:
 ## 1. Summarize cases of ant hitchhiking on vehicles in Taiwan.
@@ -31,7 +31,9 @@ library(tidyverse)
 
 # Import files -----------------------------------------------------------------
 ant_hitchhike_new <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 1) %>% 
-  mutate(Parking_date = ymd(Parking_date))
+  mutate(Parking_date = ymd(Parking_date),
+         Destination_lon = as.numeric(Destination_lon),
+         Destination_lat = as.numeric(Destination_lat))
 ant_hitchhike_old <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 3) %>% 
   mutate(Parking_date = ymd(Parking_date),
          Destination_lon = as.numeric(Destination_lon),
@@ -102,11 +104,10 @@ ant_hitchhike_all$Species_English %>%
 ### Number of cases by species
 ant_hitchhike_all %>% 
   group_by(Species_English, Species_status) %>% 
-  summarise(n = n()) %>% 
+  summarise(n = n(), .groups = "drop") %>% 
   arrange(desc(n)) %>% 
-  mutate(prop = round(n/sum(n), 3)) %T>% 
+  mutate(prop = round(n/sum(n), 2)) %T>% 
   write_csv("./03_Outputs/Tables/Case_summary.csv")
-
 
 ### Number of native vs. exotic species
 ant_hitchhike_all %>% 
@@ -164,6 +165,7 @@ cases_by_season
 
 # Chi-square test of cases in each season
 chi_test_season <- chisq.test(cases_by_season$case)
+chi_test_season
 
 # barplot of cases by season
 ggplot(cases_by_season) + 
@@ -174,13 +176,13 @@ ggplot(cases_by_season) +
                               "Summer", 
                               "Fall",
                               "Winter")) + 
-  scale_y_continuous(limits = c(0, 25), expand = c(0, 0)) + 
+  scale_y_continuous(limits = c(0, 30), expand = c(0, 0)) + 
   scale_fill_manual(values = c("#3CB371", "#FF4500", "#f1a340", "#1E90FF")) +
   my_theme + 
   theme(axis.ticks.length.x = unit(0, "in"),
         axis.text.x = element_text(margin = margin(t = 6))) + 
-  annotate(geom = "text", x = 2.5, y = 23.5, size = 5,
-           label = substitute(list(italic(chi)^2 == chisqr, ~italic(p) == pval), 
+  annotate(geom = "text", x = 3.5, y = 25, size = 5,
+           label = substitute(list(italic(chi)^2 == chisqr, ~italic(p) < 0.001), 
                               list(chisqr = round(chi_test_season$statistic, 2), 
                                    pval = round(chi_test_season$p.value, 3))))
 
@@ -243,13 +245,14 @@ map_taiwan <- ggplot() +
   geom_point(data = exotic_sp, aes(x = Location_lon, y = Location_lat, color = Exotic), size = 2) + 
   geom_point(data = native_sp, aes(x = Location_lon, y = Location_lat, fill = Native), size = 2, shape = 21, color = "transparent") + 
   coord_sf(xlim = c(118.3, 125.5), ylim = c(21, 26.6)) +
-  scale_color_manual(values = c("#FF0000", "#34210C", "#DFAC77", "#764A1B", "#FF9933", "#FFCC99"), 
-                     labels = c("Dolichoderus thoracicus \n n = 26",
+  scale_color_manual(values = c("#FF0000", "#34210C", "#DFAC77", "#764A1B", "#FF9933", "#FFCC99", "#FF6699"), 
+                     labels = c("Dolichoderus thoracicus \n n = 31",
                                 "Tapinoma melanocephalum \n n = 5",
-                                "Paratrechina longicornis \n n = 4",
+                                "Paratrechina longicornis \n n = 5",
                                 "Technomyrmex albipes \n n = 4",
                                 "Technomyrmex brunneus \n n = 2",
-                                "Anoplolepis gracilipes \n n = 1")) + 
+                                "Anoplolepis gracilipes \n n = 1",
+                                "Trichomyrmex destructor \n n = 1")) + 
   scale_fill_manual(values = c("#0033FF", "#0099FF"),
                     labels = c("          Polyrhachis dives       \n n = 2",
                                "Nylanderia     \n n = 1")) + 
@@ -280,7 +283,7 @@ map_taiwan
 ### Merge the inset map and the main map
 ggdraw(map_taiwan) +
   draw_plot(inset_map_asia, x = 0.11, y = 0.288, width = 0.23) +
-  draw_label(label = "sp.", x = 0.854, y = 0.743, size = 13)
+  draw_label(label = "sp.", x = 0.854, y = 0.78, size = 13)
 
 ggsave("./03_Outputs/Figures/Cases_map.tiff", width = 8.5, height = 7, dpi = 600, device = "tiff")
 
