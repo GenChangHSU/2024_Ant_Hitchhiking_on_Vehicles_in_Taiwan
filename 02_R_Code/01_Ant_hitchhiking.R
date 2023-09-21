@@ -32,10 +32,12 @@ library(tidyverse)
 # Import files -----------------------------------------------------------------
 ant_hitchhike_new <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 1) %>% 
   mutate(Parking_date = ymd(Parking_date),
+         Parking_duration = as.numeric(Parking_duration),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
 ant_hitchhike_old <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 3) %>% 
   mutate(Parking_date = ymd(Parking_date),
+         Parking_duration = as.numeric(Parking_duration),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
 
@@ -85,14 +87,22 @@ my_theme <-
 
 # 1. Data summary --------------------------------------------------------------
 ### Merge the two datasets
-ant_hitchhike_all <- ant_hitchhike_new %>% mutate(Parking_duration = case_when(Parking_duration_hr < 12 ~ "Half day",
-                                                          Parking_duration_hr > 12 & Parking_duration_hr < 24 ~ "A day",
-                                                          Parking_duration_hr > 24 & Parking_duration_hr < 168 ~ "A week",
-                                                          Parking_duration_hr > 168 ~ "A month")) %>% 
+ant_hitchhike_all <- ant_hitchhike_new %>% 
+  mutate(Parking_duration = case_when(Parking_duration_hr < 12 ~ "Half day",
+                                      Parking_duration_hr > 12 & Parking_duration_hr < 24 ~ "A day",
+                                      Parking_duration_hr > 24 & Parking_duration_hr < 168 ~ "A week",
+                                      Parking_duration_hr > 168 ~ "A month")) %>% 
   relocate(Parking_duration, .after = Parking_time) %>% 
   select(-Parking_duration_hr) %>% 
-  bind_rows(ant_hitchhike_old)
+  bind_rows(ant_hitchhike_old) %>% 
+  arrange(Parking_date) %>% 
+  mutate(ID = 1:n())
 
+### Write out the cleaned data as the supplementary data
+ant_hitchhike_all_supplementary <- ant_hitchhike_all %>% 
+  select(-Species_Chinese, -Location, -Destination, -Surrounding_description, -Post_url, -Note) %>% 
+  write_csv("./04_Manuscript/Supplementary Data.csv")
+  
 ### Number of cases
 ant_hitchhike_all %>% nrow()
 
