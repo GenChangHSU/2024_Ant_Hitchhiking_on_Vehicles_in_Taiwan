@@ -32,12 +32,10 @@ library(tidyverse)
 # Import files -----------------------------------------------------------------
 ant_hitchhike_new <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 1) %>% 
   mutate(Parking_date = ymd(Parking_date),
-         Parking_duration = as.numeric(Parking_duration),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
 ant_hitchhike_old <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 3) %>% 
   mutate(Parking_date = ymd(Parking_date),
-         Parking_duration = as.numeric(Parking_duration),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
 
@@ -87,7 +85,8 @@ my_theme <-
 
 # 1. Data summary --------------------------------------------------------------
 ### Merge the two datasets
-ant_hitchhike_all <- ant_hitchhike_new %>% 
+ant_hitchhike_all <- ant_hitchhike_new %>%
+  mutate(Parking_duration_hr = as.numeric(Parking_duration_hr)) %>% 
   mutate(Parking_duration = case_when(Parking_duration_hr < 12 ~ "Half day",
                                       Parking_duration_hr > 12 & Parking_duration_hr < 24 ~ "A day",
                                       Parking_duration_hr > 24 & Parking_duration_hr < 168 ~ "A week",
