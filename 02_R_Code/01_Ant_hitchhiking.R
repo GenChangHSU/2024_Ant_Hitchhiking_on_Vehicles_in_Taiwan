@@ -135,6 +135,21 @@ ant_hitchhike_all %>%
   group_by(Vehicle_type) %>% 
   summarise(n = n())
 
+### Number of cases on vehicles of different colors
+ant_hitchhike_all %>% 
+  group_by(Vehicle_color) %>% 
+  summarise(n = n())
+
+### Number of cases under different weather conditions
+ant_hitchhike_all %>% 
+  group_by(Weather) %>% 
+  summarise(n = n())
+
+### Number of cases with vs. without trees nearby the vehicles
+ant_hitchhike_all %>% 
+  group_by(Tree_nearby) %>% 
+  summarise(n = n())
+
 
 # 2. Temporal patterns of ant hitchhiking cases --------------------------------
 ### Parking duration
@@ -223,7 +238,7 @@ exotic_rank <- exotic_sp %>%
   pull(Exotic)
 
 exotic_sp <- exotic_sp %>% 
-  mutate(Exotic = factor(Exotic, level = exotic_rank, ordered = T))
+  mutate(Exotic = factor(Exotic, levels = exotic_rank, ordered = T))
 
 # (2) native species
 native_sp <- filter(ant_hitchhike_all, Species_status == "Native") %>% 
@@ -235,7 +250,7 @@ native_rank <- native_sp %>%
   pull(Native)
 
 native_sp <- native_sp %>% 
-  mutate(Native = factor(Native, level = native_rank, ordered = T))
+  mutate(Native = factor(Native, levels = native_rank, ordered = T))
 
 # administrative boundary data of Taiwan from the "geoBoundaries" database 
 taiwan_boundary <- st_read("./01_Data_raw/TW_geoBoundaries/geoBoundaries-TWN-ADM0.shp")
