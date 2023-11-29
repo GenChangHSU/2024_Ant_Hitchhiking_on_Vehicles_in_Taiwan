@@ -30,11 +30,11 @@ library(tidyverse)
 
 
 # Import files -----------------------------------------------------------------
-ant_hitchhike_new <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 1) %>% 
+ant_hitchhike_new <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx", sheet = 1) %>% 
   mutate(Parking_date = ymd(Parking_date),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
-ant_hitchhike_old <- read_xlsx("./01_Data_raw/ant_hitchhiking_for_analysis.xlsx", sheet = 3) %>% 
+ant_hitchhike_old <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx", sheet = 3) %>% 
   mutate(Parking_date = ymd(Parking_date),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
