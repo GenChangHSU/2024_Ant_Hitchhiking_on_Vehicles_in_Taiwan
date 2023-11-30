@@ -9,6 +9,7 @@
 ## 1. Summarize cases of ant hitchhiking on vehicles in Taiwan.
 ## 2. Examine the temporal patterns of ant hitchhiking cases in Taiwan.
 ## 3. Create a map of ant hitchhiking cases in Taiwan.
+## 4. Create a map of the intended destinations for the hitchhiked vehicles.
 ##
 ## -----------------------------------------------------------------------------
 set.seed(123)
@@ -30,11 +31,11 @@ library(tidyverse)
 
 
 # Import files -----------------------------------------------------------------
-ant_hitchhike_new <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx", sheet = 1) %>% 
+ant_hitchhike_new <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx", sheet = 1, na = "NA") %>% 
   mutate(Parking_date = ymd(Parking_date),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
-ant_hitchhike_old <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx", sheet = 3) %>% 
+ant_hitchhike_old <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx", sheet = 3, na = "NA") %>% 
   mutate(Parking_date = ymd(Parking_date),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
@@ -100,7 +101,7 @@ ant_hitchhike_all <- ant_hitchhike_new %>%
 ### Write out the cleaned data as the supplementary data
 ant_hitchhike_all_supplementary <- ant_hitchhike_all %>% 
   select(-Species_Chinese, -Location, -Destination, -Surrounding_description, -Post_url, -Note) %>% 
-  write_csv("./04_Manuscript/Supplementary Data.csv")
+  write_csv("./04_Manuscript/Supplementary_Data.csv")
   
 ### Number of cases
 ant_hitchhike_all %>% nrow()
@@ -116,7 +117,7 @@ ant_hitchhike_all %>%
   summarise(n = n(), .groups = "drop") %>% 
   arrange(desc(n)) %>% 
   mutate(prop = round(n/sum(n), 2)) %T>% 
-  write_csv("./03_Outputs/Tables/Case_summary.csv")
+  write_csv("./03_Outputs/Tables/Case_Summary.csv")
 
 ### Number of native vs. exotic species
 ant_hitchhike_all %>% 
@@ -210,10 +211,10 @@ ggplot(cases_by_season) +
                               list(chisqr = round(chi_test_season$statistic, 2), 
                                    pval = round(chi_test_season$p.value, 3))))
 
-ggsave("./03_Outputs/Figures/Season_barplot.tiff", width = 5, height = 4, dpi = 600, device = "tiff")  
+ggsave("./03_Outputs/Figures/Season_Barplot.tiff", width = 5, height = 4, dpi = 600, device = "tiff")  
 
 
-# 3. Map -----------------------------------------------------------------------
+# 3. Case map ------------------------------------------------------------------
 ### An inset map of East Asia
 inset_map_asia <- ggplot(map_data("world"), aes(x = long, y = lat, group = group)) +
   geom_polygon(fill = "grey90", color = "black") + 
@@ -253,7 +254,7 @@ native_sp <- native_sp %>%
   mutate(Native = factor(Native, levels = native_rank, ordered = T))
 
 # administrative boundary data of Taiwan from the "geoBoundaries" database 
-taiwan_boundary <- st_read("./01_Data_raw/TW_geoBoundaries/geoBoundaries-TWN-ADM0.shp")
+taiwan_boundary <- st_read("./01_Data_Raw/TW_geoBoundaries/geoBoundaries-TWN-ADM0.shp")
 
 # elevation data of Taiwan from the "Amazon Web Services" database  
 taiwan_elevation <- get_elev_raster(locations = taiwan_boundary, z = 9, clip = "locations") %>% 
@@ -309,7 +310,22 @@ ggdraw(map_taiwan) +
   draw_plot(inset_map_asia, x = 0.11, y = 0.288, width = 0.23) +
   draw_label(label = "sp.", x = 0.854, y = 0.78, size = 13)
 
-ggsave("./03_Outputs/Figures/Cases_map.tiff", width = 8.5, height = 7, dpi = 600, device = "tiff")
+ggsave("./03_Outputs/Figures/Case_Map.tiff", width = 8.5, height = 7, dpi = 600, device = "tiff")
+
+
+# 4. Destination map -----------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
