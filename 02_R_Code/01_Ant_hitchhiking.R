@@ -314,9 +314,43 @@ ggsave("./03_Outputs/Figures/Case_Map.tiff", width = 8.5, height = 7, dpi = 600,
 
 
 # 4. Destination map -----------------------------------------------------------
+ant_hitchhike_all_destination <- ant_hitchhike_all %>% 
+  filter(!is.na(Destination_lon))
 
+destination_map <- ggplot() +
+  geom_raster(data = taiwan_elevation, aes(x = lon, y = lat, fill = elev), alpha = 0.7, show.legend = F) +
+  geom_sf(data = taiwan_boundary, color = "grey10", fill = "transparent", size = 0.2) +
+  scale_fill_gradient2(low = "grey", high = "grey70") +
+  new_scale_fill() +
+  geom_curve(data = ant_hitchhike_all_destination,
+             aes(x = Location_lon, y = Location_lat, xend = Destination_lon, yend = Destination_lat),
+             curvature = 0.2, arrow = arrow(angle = 20, length = unit(0.1, "inches"), type = "closed"), 
+             linewidth = 1.2) + 
+  geom_point(data = ant_hitchhike_all_destination, aes(x = Location_lon, y = Location_lat),
+             shape = 16, alpha = 0.5, size = 2.5) +
+  scale_x_continuous(breaks = c(120:122)) + 
+  coord_sf(xlim = c(119, 122.5), ylim = c(21.5, 25.5)) +
+  labs(x = "", y = "") + 
+  theme_classic() + 
+  theme(axis.text = element_text(colour = "black", size = 13),
+        axis.line = element_blank(),
+        panel.background = element_rect(color = "black"),
+        legend.position = c(0.78, 0.5),
+        legend.margin = margin(r = 12, b = 10),
+        legend.title = element_text(face = "bold", margin = margin(t = 5, b = 0), size = 15),
+        legend.title.align = 0.5,
+        legend.text = element_text(face = "italic", hjust = 0.5, vjust = -3.5,
+                                   margin = margin(b = 12), size = 13),
+        legend.spacing.y = unit(0, "in"),
+        legend.background = element_rect(color = "white")) +
+  scalebar(x.min = 120.02, x.max = 120.02, y.min = 21.6, y.max = 21.9,
+           dist = 50, dist_unit = "km", transform = T, model = "WGS84", height = 0.2, st.dist = 0.4, st.size = 3.2) +
+  north(x.min = 119.73, x.max = 119.85, y.min = 22.15, y.max = 22.25, symbol = 10, scale = 5) + 
+  annotate(geom = "text", x = 119.55, y = 22.3, label = "N", size = 6)
 
+destination_map
 
+ggsave("./03_Outputs/Figures/Destination_Map.tiff", width = 7, height = 7, dpi = 600, device = "tiff")
 
 
 
