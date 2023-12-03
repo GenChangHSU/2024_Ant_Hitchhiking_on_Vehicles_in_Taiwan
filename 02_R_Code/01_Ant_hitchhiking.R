@@ -28,6 +28,7 @@ library(raster)
 library(ggnewscale)
 library(ggsn)
 library(tidyverse)
+library(geosphere)
 
 
 # Import files -----------------------------------------------------------------
@@ -314,20 +315,23 @@ ggsave("./03_Outputs/Figures/Case_Map.tiff", width = 8.5, height = 7, dpi = 600,
 
 
 # 4. Destination map -----------------------------------------------------------
+### Cases with the intended destinations
 ant_hitchhike_all_destination <- ant_hitchhike_all %>% 
-  filter(!is.na(Destination_lon))
+  filter(!is.na(Destination_lon)) %>% 
+  rowwise() %>% 
+  mutate(Dist_km = distHaversine(c(Location_lon, Location_lat), 
+                                 c(Destination_lon, Destination_lat))/1000)  # distance
 
+### Map
 destination_map <- ggplot() +
   geom_raster(data = taiwan_elevation, aes(x = lon, y = lat, fill = elev), alpha = 0.7, show.legend = F) +
   geom_sf(data = taiwan_boundary, color = "grey10", fill = "transparent", size = 0.2) +
   scale_fill_gradient2(low = "grey", high = "grey70") +
   new_scale_fill() +
-  geom_curve(data = ant_hitchhike_all_destination,
+  geom_curve(data = filter(ant_hitchhike_all_destination, Dist_km > 20),
              aes(x = Location_lon, y = Location_lat, xend = Destination_lon, yend = Destination_lat),
              curvature = 0.2, arrow = arrow(angle = 20, length = unit(0.1, "inches"), type = "closed"), 
-             linewidth = 1.2) + 
-  geom_point(data = ant_hitchhike_all_destination, aes(x = Location_lon, y = Location_lat),
-             shape = 16, alpha = 0.5, size = 2.5) +
+             linewidth = 0.8) +
   scale_x_continuous(breaks = c(120:122)) + 
   coord_sf(xlim = c(119, 122.5), ylim = c(21.5, 25.5)) +
   labs(x = "", y = "") + 
