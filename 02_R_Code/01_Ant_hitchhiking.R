@@ -193,7 +193,7 @@ cases_by_season
 chi_test_season <- chisq.test(cases_by_season$case)
 chi_test_season
 
-# barplot of cases by season
+# barplot of cases by season (colored)
 ggplot(cases_by_season) + 
   geom_bar(aes(x = season, y = case, fill = season), stat = "identity", 
            color = "black", width = 0.7, show.legend = F) +
@@ -203,7 +203,7 @@ ggplot(cases_by_season) +
                               "Fall",
                               "Winter")) + 
   scale_y_continuous(limits = c(0, 30), expand = c(0, 0)) + 
-  scale_fill_manual(values = c("#3CB371", "#FF4500", "#f1a340", "#1E90FF")) +
+  scale_fill_manual(values = c("#3CB371", "#feb24c", "#fa9fb5", "#1E90FF")) +
   my_theme + 
   theme(axis.ticks.length.x = unit(0, "in"),
         axis.text.x = element_text(margin = margin(t = 6))) + 
@@ -212,7 +212,27 @@ ggplot(cases_by_season) +
                               list(chisqr = round(chi_test_season$statistic, 2), 
                                    pval = round(chi_test_season$p.value, 3))))
 
-ggsave("./03_Outputs/Figures/Season_Barplot.tiff", width = 5, height = 4, dpi = 600, device = "tiff")  
+ggsave("./03_Outputs/Figures/Season_Barplot_Colored.tiff", width = 5, height = 4, dpi = 600, device = "tiff")  
+
+# barplot of cases by season (gray)
+ggplot(cases_by_season) + 
+  geom_bar(aes(x = season, y = case), stat = "identity", fill = "grey60", 
+           color = "black", width = 0.7, show.legend = F) +
+  labs(x = NULL, y = "Number of cases") + 
+  scale_x_discrete(labels = c("Spring", 
+                              "Summer", 
+                              "Fall",
+                              "Winter")) + 
+  scale_y_continuous(limits = c(0, 30), expand = c(0, 0)) + 
+  my_theme + 
+  theme(axis.ticks.length.x = unit(0, "in"),
+        axis.text.x = element_text(margin = margin(t = 6))) + 
+  annotate(geom = "text", x = 3.5, y = 25, size = 5,
+           label = substitute(list(italic(chi)^2 == chisqr, ~italic(p) < 0.001), 
+                              list(chisqr = round(chi_test_season$statistic, 2), 
+                                   pval = round(chi_test_season$p.value, 3))))
+
+ggsave("./03_Outputs/Figures/Season_Barplot_Gray.tiff", width = 5, height = 4, dpi = 600, device = "tiff")  
 
 
 # 3. Case map ------------------------------------------------------------------
@@ -322,6 +342,9 @@ ant_hitchhike_all_destination <- ant_hitchhike_all %>%
   mutate(Dist_km = distHaversine(c(Location_lon, Location_lat), 
                                  c(Destination_lon, Destination_lat))/1000)  # distance
 
+### Average travel distance
+ant_hitchhike_all_destination$Dist_km %>% mean()
+
 ### Map
 destination_map <- ggplot() +
   geom_raster(data = taiwan_elevation, aes(x = lon, y = lat, fill = elev), alpha = 0.7, show.legend = F) +
@@ -329,10 +352,12 @@ destination_map <- ggplot() +
   scale_fill_gradient2(low = "grey", high = "grey70") +
   new_scale_fill() +
   geom_curve(data = filter(ant_hitchhike_all_destination, Dist_km > 20),
-             aes(x = Location_lon, y = Location_lat, xend = Destination_lon, yend = Destination_lat),
+             aes(x = Location_lon, y = Location_lat, xend = Destination_lon, yend = Destination_lat,
+                 color = Species_English), show.legend = F,
              curvature = 0.2, arrow = arrow(angle = 20, length = unit(0.1, "inches"), type = "closed"), 
              linewidth = 0.8) +
   scale_x_continuous(breaks = c(120:122)) + 
+  scale_color_manual(values = c("black", "brown", "gray")) + 
   coord_sf(xlim = c(119, 122.5), ylim = c(21.5, 25.5)) +
   labs(x = "", y = "") + 
   theme_classic() + 
