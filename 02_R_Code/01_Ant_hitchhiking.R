@@ -3,13 +3,14 @@
 ##
 ## Author: Gen-Chang Hsu
 ##
-## Date: 2023-09-20
+## Date: 2024-01-13
 ##
 ## Description:
 ## 1. Summarize cases of ant hitchhiking on vehicles in Taiwan.
 ## 2. Examine the temporal patterns of ant hitchhiking cases in Taiwan.
 ## 3. Create a map of ant hitchhiking cases in Taiwan.
 ## 4. Create a map of the intended destinations for the hitchhiked vehicles.
+## 5. Estimate the sampling completeness of the data
 ##
 ## -----------------------------------------------------------------------------
 set.seed(123)
@@ -29,6 +30,7 @@ library(ggnewscale)
 library(ggsn)
 library(tidyverse)
 library(geosphere)
+library(iNEXT)
 
 
 # Import files -----------------------------------------------------------------
@@ -36,7 +38,7 @@ ant_hitchhike_new <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx"
   mutate(Parking_date = ymd(Parking_date),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
-ant_hitchhike_old <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx", sheet = 3, na = "NA") %>% 
+ant_hitchhike_old <- read_xlsx("./01_Data_Raw/Ant_Hitchhiking_for_Analysis.xlsx", sheet = 2, na = "NA") %>% 
   mutate(Parking_date = ymd(Parking_date),
          Destination_lon = as.numeric(Destination_lon),
          Destination_lat = as.numeric(Destination_lat))
@@ -152,6 +154,10 @@ ant_hitchhike_all %>%
   group_by(Tree_nearby) %>% 
   summarise(n = n())
 
+### Number of cases with queens and brood
+ant_hitchhike_all %>% 
+  group_by(Brood_queen) %>% 
+  summarise(n = n())
 
 # 2. Temporal patterns of ant hitchhiking cases --------------------------------
 ### Parking duration
@@ -380,6 +386,9 @@ destination_map <- ggplot() +
 destination_map
 
 ggsave("./03_Outputs/Figures/Destination_Map.tiff", width = 7, height = 7, dpi = 600, device = "tiff")
+
+
+# 5. Estimate the sampling completeness of the data ----------------------------
 
 
 
