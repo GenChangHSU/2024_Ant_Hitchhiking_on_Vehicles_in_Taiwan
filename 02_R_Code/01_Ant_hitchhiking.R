@@ -389,8 +389,49 @@ ggsave("./03_Outputs/Figures/Destination_Map.tiff", width = 7, height = 7, dpi =
 
 
 # 5. Estimate the sampling completeness of the data ----------------------------
+### Organize the data for iNEXT input
+ant_hitchhike_iNEXT <- ant_hitchhike_all %>% 
+  count(Species_English) %>% 
+  arrange(desc(n)) %>%
+  pull(n) %>% 
+  list()
 
+### Run the iNEXT analysis
+iNEXT_out <- iNEXT(ant_hitchhike_iNEXT, q = 0, datatype = "abundance", nboot = 1000, knots = 500)
 
+### The observed species richness and sampling completeness estimate
+iNEXT_out$iNextEst$size_based %>% filter(Method == "Observed")
+
+### Extract the raw sampling completeness estimates
+species_completeness_df <- fortify(iNEXT_out, type = 2)
+
+### The observed sampling completeness estimates
+species_completeness_observed <- species_completeness_df[which(species_completeness_df$Method == "Observed"), ] 
+
+### The rarefied and extrapolated sampling completeness estimates
+species_completeness_rarefied_extrapolated <- species_completeness_df[which(species_completeness_df$Method != "Observed"), ] %>% 
+  mutate(Method = fct_relevel(Method, "Rarefaction", "Extrapolation"))
+
+### Plot
+species_completeness_plot <-
+  ggplot(data = species_completeness_df, mapping = aes(x = x, y = y)) + 
+  geom_line(data = species_completeness_rarefied_extrapolated, aes(linetype = Method), lwd = 1, show.legend = F) +
+  geom_ribbon(aes(ymin = y.lwr, ymax = y.upr), color = NA, alpha = 0.2) + 
+  geom_point(data = species_completeness_observed, size = 4) +
+  scale_x_continuous(limits = c(0, 80), expand = c(0, 0.5)) + 
+  scale_y_continuous(limits = c(0, 1.05), expand = c(0, 0)) + 
+  labs(x = "Number of hitchhiking cases", y = "Sampling completeness") +
+  my_theme + 
+  theme(legend.position = c(0.8, 0.75), 
+        legend.title = element_blank(), 
+        text = element_text(size = 18),
+        legend.spacing.y = unit(0.075, "inch"),
+        legend.spacing.x = unit(0.1, "inch")
+  )
+
+species_completeness_plot
+
+ggsave("./03_Outputs/Figures/rarefaction_completeness.tiff", width = 5, height = 4, dpi = 600, device = "tiff")
 
 
 
