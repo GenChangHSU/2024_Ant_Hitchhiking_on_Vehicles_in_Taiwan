@@ -209,7 +209,7 @@ ggplot(cases_by_season) +
                               "Fall",
                               "Winter")) + 
   scale_y_continuous(limits = c(0, 30), expand = c(0, 0)) + 
-  scale_fill_manual(values = c("#3CB371", "#feb24c", "#fa9fb5", "#1E90FF")) +
+  scale_fill_manual(values = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3")) +
   my_theme + 
   theme(axis.ticks.length.x = unit(0, "in"),
         axis.text.x = element_text(margin = margin(t = 6))) + 
