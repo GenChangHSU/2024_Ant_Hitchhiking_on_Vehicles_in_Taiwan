@@ -1,53 +1,53 @@
 ID,Parking_date,Parking_time,Parking_duration,Species_English,Species_status,Vehicle_type,Vehicle_color,Location_lon,Location_lat,Destination_lon,Destination_lat,Weather,Tree_nearby,Brood_queen
-1,8/13/2017,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,121.0054563,23.91470996,120.4935991,22.67443376,NA,NA,No
-2,5/17/2019,17:00,A day,Dolichoderus_thoracicus,Exotic,Car,White,120.991599,22.686784,120.8734948,24.68874002,Cloudy,Yes,No
-3,9/25/2019,NA,A month,Dolichoderus_thoracicus,Exotic,Scooter,NA,121.0146077,24.77810107,NA,NA,NA,Yes,No
-4,4/8/2020,NA,A week,Tapinoma_melanocephalum,Exotic,Car,NA,120.5610416,24.09299204,121.391039,25.083033,Sunny,Yes,No
-5,6/1/2020,NA,Half day,Dolichoderus_thoracicus,Exotic,Scooter,NA,120.9278816,23.94966022,NA,NA,NA,NA,No
-6,8/1/2020,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,120.7976235,23.83542443,121.199268,23.108855,NA,Yes,No
-7,9/5/2020,NA,A month,Anoplolepis_gracilipes,Exotic,Car,Dark green,121.618935,25.044103,NA,NA,NA,NA,Brood
-8,9/6/2020,6:00,Half day,Dolichoderus_thoracicus,Exotic,Car,NA,120.8181539,21.96577973,NA,NA,NA,NA,No
-9,10/1/2020,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,NA,120.6860111,23.75684947,NA,NA,NA,NA,No
-10,12/13/2020,9:00,Half day,Polyrhachis_dives,Native,Scooter,NA,120.603,22.64866667,NA,NA,Sunny,NA,Brood
-11,4/1/2021,NA,A week,Tapinoma_melanocephalum,Exotic,Car,NA,121.2594605,25.01808929,NA,NA,NA,NA,No
-12,5/3/2021,NA,Half day,Paratrechina_longicornis,Exotic,Car,NA,120.9898209,24.78942037,NA,NA,NA,NA,Brood
-13,5/11/2021,NA,A day,Paratrechina_longicornis,Exotic,Car,NA,120.9898209,24.78942037,NA,NA,NA,NA,Brood
-14,5/25/2021,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,120.8007516,23.82918755,NA,NA,NA,NA,Queen
-15,6/8/2021,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,120.9898209,24.78942037,NA,NA,NA,NA,No
-16,6/16/2021,NA,A week,Tapinoma_melanocephalum,Exotic,Car,NA,121.0949144,22.80119838,NA,NA,NA,NA,No
-17,6/29/2021,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,NA,120.9898209,24.78942037,NA,NA,NA,Yes,No
-18,7/4/2021,NA,A month,Polyrhachis_dives,Native,Car,NA,120.7558333,24.57430556,NA,NA,NA,NA,Brood
-19,7/25/2021,16:42,NA,Technomyrmex_albipes,Exotic,Car,NA,120.789,24.274,NA,NA,NA,NA,No
-20,7/26/2021,NA,A month,Nylanderia_sp,Native,Car,NA,121.213536,24.94478456,NA,NA,NA,NA,No
-21,7/31/2021,NA,A week,Dolichoderus_thoracicus,Exotic,Car,NA,120.615508,24.11449232,NA,NA,NA,NA,No
-22,8/1/2021,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,120.9084878,23.86498643,NA,NA,NA,NA,No
-23,8/2/2021,NA,NA,Dolichoderus_thoracicus,Exotic,Car,NA,120.6816435,24.19336842,NA,NA,NA,NA,No
-24,8/4/2021,NA,A week,Paratrechina_longicornis,Exotic,Scooter,NA,121.4704746,25.14583536,NA,NA,NA,NA,No
-25,8/9/2021,NA,A day,Technomyrmex_albipes,Exotic,Car,NA,120.7840573,22.13346974,NA,NA,NA,NA,Brood
-26,8/18/2021,NA,A day,Dolichoderus_thoracicus,Exotic,Car,Black,120.8007516,23.82918755,NA,NA,NA,NA,Queen
-27,9/10/2021,NA,A day,Technomyrmex_albipes,Exotic,Car,NA,121.6163509,25.03696507,NA,NA,NA,NA,No
-28,9/13/2021,16:20,Half day,Technomyrmex_albipes,Exotic,Car,NA,120.5245916,23.67639585,NA,NA,NA,NA,No
-29,10/12/2021,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,White,121.384303,25.08061169,121.391039,25.083033,NA,NA,No
-30,10/31/2021,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,NA,120.9452878,23.96450797,NA,NA,NA,Yes,No
-31,11/1/2021,NA,A week,Paratrechina_longicornis,Exotic,Scooter,NA,120.4722002,23.47781601,NA,NA,NA,NA,No
-32,3/30/2022,NA,A week,Dolichoderus_thoracicus,Exotic,Car,NA,120.8007516,23.82918755,121.199268,23.108855,NA,Yes,Queen
-33,4/9/2022,NA,A day,Technomyrmex_brunneus,Exotic,Car,Black,121.6758404,24.59080469,121.391039,25.083033,Rainy,NA,No
-34,4/17/2022,NA,A week,Technomyrmex_brunneus,Exotic,Scooter,NA,121.3851868,25.03475534,NA,NA,NA,NA,Brood
-35,5/23/2022,NA,A week,Tapinoma_melanocephalum,Exotic,Car,NA,120.9247484,24.72048422,NA,NA,NA,NA,No
-36,5/29/2022,NA,A day,Dolichoderus_thoracicus,Exotic,Car,White,120.7928224,23.83131991,NA,NA,NA,Yes,No
-37,6/5/2022,9:00,Half day,Dolichoderus_thoracicus,Exotic,Car,White,121.0333387,24.091411,120.67558,24.121393,NA,NA,No
-38,6/16/2022,0:00,A day,Dolichoderus_thoracicus,Exotic,Car,White,120.9731705,24.01119669,NA,NA,NA,Yes,No
-39,6/16/2022,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,121.0063199,23.97814081,120.56428,24.223341,NA,NA,No
-40,8/4/2022,15:00,Half day,Dolichoderus_thoracicus,Exotic,Car,Black,121.269271,23.100578,NA,NA,NA,Yes,No
-41,8/14/2022,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,White,121.0265923,24.0866315,120.666963,24.157351,NA,NA,No
-42,8/14/2022,NA,A week,Tapinoma_melanocephalum,Exotic,Car,Blue,120.6820932,24.19254742,NA,NA,NA,NA,No
-43,2/22/2023,13:30,Half day,Dolichoderus_thoracicus,Exotic,Car,White,120.795442,23.775696,120.6755454,24.12131112,Cloudy,Yes,No
-44,3/31/2023,NA,A week,Paratrechina_longicornis,Exotic,Scooter,Silver,121.536392,25.006433,NA,NA,Rainy,No,Brood
-45,5/24/2023,17:00,A week,Dolichoderus_thoracicus,Exotic,Car,White,120.55804,24.06537,120.5576004,24.0656321,Cloudy,Yes,No
-46,5/27/2023,11:00,Half day,Dolichoderus_thoracicus,Exotic,Car,Black,120.702749,24.052188,120.7034749,24.0956752,Sunny,Yes,No
-47,7/2/2023,15:00,A day,Dolichoderus_thoracicus,Exotic,Car,Grey,120.97646,23.94475,120.6828864,24.18420207,Sunny,Yes,No
-48,7/4/2023,18:00,A week,Dolichoderus_thoracicus,Exotic,Car,Silver,120.952707,23.969026,120.6101466,23.97097846,Sunny,Yes,No
-49,7/23/2023,9:00,Half day,Dolichoderus_thoracicus,Exotic,Car,White,121.003519,24.08028,120.6624623,24.1214546,Sunny,Yes,No
-50,8/7/2023,0:00,A week,Trichomyrmex_destructor,Exotic,Scooter,Red,121.3147845,24.9900554,121.3367373,24.99816967,NA,No,No
-51,8/8/2023,17:00,A week,Dolichoderus_thoracicus,Exotic,Car,White,120.800281,23.828552,NA,NA,Rainy,Yes,No
-52,8/10/2023,11:37,NA,Dolichoderus_thoracicus,Exotic,Car,Blue,120.7744779,23.7493116,NA,NA,Sunny,Yes,No
+1,2017-08-13,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,121.005456279764,23.9147099644175,120.493599095617,22.6744337598374,NA,NA,No
+2,2019-05-17,17:00,A day,Dolichoderus_thoracicus,Exotic,Car,White,120.991599,22.686784,120.873494840486,24.6887400162283,Cloudy,Yes,No
+3,2019-09-25,NA,A month,Dolichoderus_thoracicus,Exotic,Scooter,NA,121.014607681748,24.7781010661178,NA,NA,NA,Yes,No
+4,2020-04-08,NA,A week,Tapinoma_melanocephalum,Exotic,Car,NA,120.561041585084,24.0929920370014,121.391039,25.083033,Sunny,Yes,No
+5,2020-06-01,NA,Half day,Dolichoderus_thoracicus,Exotic,Scooter,NA,120.927881600154,23.9496602216195,NA,NA,NA,NA,No
+6,2020-08-01,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,120.797623493674,23.8354244334485,121.199268,23.108855,NA,Yes,No
+7,2020-09-05,NA,A month,Anoplolepis_gracilipes,Exotic,Car,Dark green,121.618935,25.044103,NA,NA,NA,NA,Brood
+8,2020-09-06,6:00,Half day,Dolichoderus_thoracicus,Exotic,Car,NA,120.818153930452,21.9657797250651,NA,NA,NA,NA,No
+9,2020-10-01,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,NA,120.68601108018,23.75684947021,NA,NA,NA,NA,No
+10,2020-12-13,9:00,Half day,Polyrhachis_dives,Native,Scooter,NA,120.603,22.64866667,NA,NA,Sunny,NA,Brood
+11,2021-04-01,NA,A week,Tapinoma_melanocephalum,Exotic,Car,NA,121.259460451407,25.0180892884336,NA,NA,NA,NA,No
+12,2021-05-03,NA,Half day,Paratrechina_longicornis,Exotic,Car,NA,120.989820923049,24.7894203746766,NA,NA,NA,NA,Brood
+13,2021-05-11,NA,A day,Paratrechina_longicornis,Exotic,Car,NA,120.989820923049,24.7894203746766,NA,NA,NA,NA,Brood
+14,2021-05-25,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,120.800751607164,23.8291875493213,NA,NA,NA,NA,Queen
+15,2021-06-08,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,120.989820923049,24.7894203746766,NA,NA,NA,NA,No
+16,2021-06-16,NA,A week,Tapinoma_melanocephalum,Exotic,Car,NA,121.094914364613,22.8011983846292,NA,NA,NA,NA,No
+17,2021-06-29,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,NA,120.989820923049,24.7894203746766,NA,NA,NA,Yes,No
+18,2021-07-04,NA,A month,Polyrhachis_dives,Native,Car,NA,120.75583333,24.57430556,NA,NA,NA,NA,Brood
+19,2021-07-25,16:42,NA,Technomyrmex_albipes,Exotic,Car,NA,120.789,24.274,NA,NA,NA,NA,No
+20,2021-07-26,NA,A month,Nylanderia_sp,Native,Car,NA,121.213535993731,24.9447845618742,NA,NA,NA,NA,No
+21,2021-07-31,NA,A week,Dolichoderus_thoracicus,Exotic,Car,NA,120.615507980198,24.1144923218312,NA,NA,NA,NA,No
+22,2021-08-01,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,120.90848777833,23.8649864324543,NA,NA,NA,NA,No
+23,2021-08-02,NA,NA,Dolichoderus_thoracicus,Exotic,Car,NA,120.681643451365,24.1933684218396,NA,NA,NA,NA,No
+24,2021-08-04,NA,A week,Paratrechina_longicornis,Exotic,Scooter,NA,121.470474592991,25.1458353609832,NA,NA,NA,NA,No
+25,2021-08-09,NA,A day,Technomyrmex_albipes,Exotic,Car,NA,120.784057293861,22.1334697411457,NA,NA,NA,NA,Brood
+26,2021-08-18,NA,A day,Dolichoderus_thoracicus,Exotic,Car,Black,120.800751607164,23.8291875493213,NA,NA,NA,NA,Queen
+27,2021-09-10,NA,A day,Technomyrmex_albipes,Exotic,Car,NA,121.616350933956,25.0369650741737,NA,NA,NA,NA,No
+28,2021-09-13,16:20,Half day,Technomyrmex_albipes,Exotic,Car,NA,120.524591618023,23.6763958475496,NA,NA,NA,NA,No
+29,2021-10-12,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,White,121.384302995593,25.08061169164,121.391039,25.083033,NA,NA,No
+30,2021-10-31,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,NA,120.945287778335,23.9645079741834,NA,NA,NA,Yes,No
+31,2021-11-01,NA,A week,Paratrechina_longicornis,Exotic,Scooter,NA,120.47220016482,23.4778160137451,NA,NA,NA,NA,No
+32,2022-03-30,NA,A week,Dolichoderus_thoracicus,Exotic,Car,NA,120.800751607164,23.8291875493213,121.199268,23.108855,NA,Yes,Queen
+33,2022-04-09,NA,A day,Technomyrmex_brunneus,Exotic,Car,Black,121.675840396747,24.5908046853466,121.391039,25.083033,Rainy,NA,No
+34,2022-04-17,NA,A week,Technomyrmex_brunneus,Exotic,Scooter,NA,121.385186825782,25.0347553435176,NA,NA,NA,NA,Brood
+35,2022-05-23,NA,A week,Tapinoma_melanocephalum,Exotic,Car,NA,120.924748380229,24.7204842189591,NA,NA,NA,NA,No
+36,2022-05-29,NA,A day,Dolichoderus_thoracicus,Exotic,Car,White,120.79282235184,23.831319911496,NA,NA,NA,Yes,No
+37,2022-06-05,9:00,Half day,Dolichoderus_thoracicus,Exotic,Car,White,121.03333872,24.091411,120.67558,24.121393,NA,NA,No
+38,2022-06-16,0:00,A day,Dolichoderus_thoracicus,Exotic,Car,White,120.973170451356,24.0111966910804,NA,NA,NA,Yes,No
+39,2022-06-16,NA,A day,Dolichoderus_thoracicus,Exotic,Car,NA,121.006319901755,23.9781408122414,120.56428,24.223341,NA,NA,No
+40,2022-08-04,15:00,Half day,Dolichoderus_thoracicus,Exotic,Car,Black,121.269271,23.100578,NA,NA,NA,Yes,No
+41,2022-08-14,NA,Half day,Dolichoderus_thoracicus,Exotic,Car,White,121.0265923,24.0866315,120.666963,24.157351,NA,NA,No
+42,2022-08-14,NA,A week,Tapinoma_melanocephalum,Exotic,Car,Blue,120.682093236019,24.1925474230372,NA,NA,NA,NA,No
+43,2023-02-22,13:30,Half day,Dolichoderus_thoracicus,Exotic,Car,White,120.795442,23.775696,120.675545440764,24.1213111227318,Cloudy,Yes,No
+44,2023-03-31,NA,A week,Paratrechina_longicornis,Exotic,Scooter,Silver,121.536392,25.006433,NA,NA,Rainy,No,Brood
+45,2023-05-24,17:00,A week,Dolichoderus_thoracicus,Exotic,Car,White,120.55804,24.06537,120.557600375419,24.0656320952287,Cloudy,Yes,No
+46,2023-05-27,11:00,Half day,Dolichoderus_thoracicus,Exotic,Car,Black,120.702749,24.052188,120.703474861381,24.0956752025246,Sunny,Yes,No
+47,2023-07-02,15:00,A day,Dolichoderus_thoracicus,Exotic,Car,Grey,120.97646,23.94475,120.682886435026,24.1842020704196,Sunny,Yes,No
+48,2023-07-04,18:00,A week,Dolichoderus_thoracicus,Exotic,Car,Silver,120.952707,23.969026,120.610146611658,23.9709784614056,Sunny,Yes,No
+49,2023-07-23,9:00,Half day,Dolichoderus_thoracicus,Exotic,Car,White,121.003519,24.08028,120.662462331881,24.1214546035866,Sunny,Yes,No
+50,2023-08-07,0:00,A week,Trichomyrmex_destructor,Exotic,Scooter,Red,121.3147845,24.9900554,121.336737259589,24.998169671502,NA,No,No
+51,2023-08-08,17:00,A week,Dolichoderus_thoracicus,Exotic,Car,White,120.800281,23.828552,NA,NA,Rainy,Yes,No
+52,2023-08-10,11:37,NA,Dolichoderus_thoracicus,Exotic,Car,Blue,120.7744779,23.7493116,NA,NA,Sunny,Yes,No
